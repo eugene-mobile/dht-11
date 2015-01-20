@@ -5,18 +5,24 @@
     <link href="bower_components/bootstrap-material-design/dist/css/ripples.min.css" rel="stylesheet">
     <link href="bower_components/bootstrap-material-design/dist/css/material-wfont.min.css" rel="stylesheet">
     <link href="css/styles.css" rel="stylesheet">
+    <script>
+        function togglePin(pinNum) {
+            $.post( "ajax/pin/"+pinNum, function( data ) {
+                alert('success! '+data);
+                //$( ".result" ).html( data );
+            });
+        }
+        function refreshAmbientData() {
+            $.getJSON( "ajax/ambient", function( data ) {
+                $( "#temperature-value").html(data.temperature+'C&deg;');
+                $( "#humidity-value").html(data.humidity+'%');
+            });
+        }
+    </script>
+
 </head>
 <body>
 <h1>Welcome to PI rpi-nginx!</h1>
-<script>
-    function togglePin(pinNum) {
-        $.post( "ajax/pin/"+pinNum, function( data ) {
-            alert('success! '+data);
-            //$( ".result" ).html( data );
-        });
-    }
-
-</script>
 <p>
     <button class="btn btn-material-deeppurple" onclick="togglePin(1)">Deep purple button</button>
 </p>
@@ -28,23 +34,23 @@
     <div class="panel-body">
         <div class="list-group">
             <div class="list-group-item">
-                <div class="row-action-primary">
+                <div class="row-action-primary" onclick="refreshAmbientData();">
                     <i class="mdi-navigation-refresh"></i>
                 </div>
                 <div class="row-content">
                     <div class="action-secondary"><i class="mdi-material-info"></i></div>
-                    <h4 class="list-group-item-heading">24C</h4>
+                    <h4 class="list-group-item-heading" id="temperature-value">?</h4>
                     <p class="list-group-item-text">Temperature.</p>
                 </div>
             </div>
             <div class="list-group-separator"></div>
             <div class="list-group-item">
-                <div class="row-action-primary">
+                <div class="row-action-primary" onclick="refreshAmbientData();">
                     <i class="mdi-navigation-refresh"></i>
                 </div>
                 <div class="row-content">
                     <div class="action-secondary"><i class="mdi-material-info"></i></div>
-                    <h4 class="list-group-item-heading">33%</h4>
+                    <h4 class="list-group-item-heading" id="humidity-value">?</h4>
                     <p class="list-group-item-text">Humidity.</p>
                 </div>
             </div>
@@ -61,6 +67,8 @@
     <script>
         $(document).ready(function() {
             $.material.init();
+            refreshAmbientData();
+            setInterval(refreshAmbientData, 3000);
         });
     </script>
 
