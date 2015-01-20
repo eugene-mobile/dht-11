@@ -1,0 +1,7 @@
+body {
+    padding: 5px;
+}
+div.ambient-info {
+    min-width: 250px;
+    max-width: 500px;
+}
