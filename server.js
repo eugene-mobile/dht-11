@@ -1,7 +1,8 @@
 const http = require('http');
 const app = require('express')();
-const gpio = require('rpi-gpio');
+
 const ambient = require('./controllers/ambient')
+const gpio = require('./controllers/gpio')
 
 const sensorPin = 4;    //#Pin to which ambient sensor is connected
 const sensorType = 11;  //DHT-11
@@ -9,24 +10,9 @@ const sensorType = 11;  //DHT-11
 ambient.init(sensorType, sensorPin)
 
 const outputPins = [40, 38, 36, 32, 26, 24, 22, 18];
+var pinValue = false;
 
-var outPinValue = false;
-
-outputPins.forEach(function(pinNum) {
-   gpio.setup(pinNum, gpio.DIR_OUT);
-})
-
-function toggleLed() {
-   outPinValue = !outPinValue;
-   outputPins.forEach(function(pinNum) {
-      try {
-         gpio.output(pinNum, outPinValue, function(err) {
-           if (err) console.log('Error writing to pin: '+err);
-           console.log(pinNum+' pin set to '+outPinValue);
-         });
-      } catch (err) {}
-   })
-}
+gpio.init(outputPins)
 
 app.get('/ajax/ambient', function(req, res) {
       console.log('HTTP GET request /ambient')
@@ -41,10 +27,11 @@ app.get('/ajax/ambient', function(req, res) {
    })
 
 app.post('/ajax/pin/*', function(req, res) {
-      console.log('HTTP post to '+req.url);
-      toggleLed();
-      res.write('All outputs set to '+outPinValue);
-      res.end();
+    console.log('HTTP post to '+req.url);
+    pinValue = !pinValue;
+    gpio.togglePin(40, pinValue)
+    res.write('Pin 40 set to '+pinValue);
+    res.end();
    })
 
 var server = app.listen(8888, function() {
