@@ -13,16 +13,24 @@ const outputPins = [40, 38, 36, 32, 26, 24, 22, 18];
 gpio.init(outputPins)
 
 app.get('/ajax/ambient', function(req, res) {
-      //console.log('HTTP GET request /ambient')
-      var reading = ambient.recentRead();
-      if (!reading) {
-         res.write('Not ready yet');
-      } else {
-         //res.write(JSON.stringify(recentRead));
-         res.json(reading);
-      }
-      res.end()
-   })
+    //console.log('HTTP GET request /ambient')
+    var reading = ambient.recentRead();
+    if (!reading) {
+        res.write('Not ready yet');
+    } else {
+        res.json(reading);
+    }
+    res.end()
+})
+
+app.get('/ajax/pin', function(req, res) {
+    var parsedUrl = url.parse(req.url, true);
+    var pathname = parsedUrl.pathname;
+    console.log('GET request to '+pathname);
+    var reading = gpio.allPinValues();
+    res.json(reading);
+    res.end();
+})
 
 app.post('/ajax/pin/*', function(req, res) {
     var parsedUrl = url.parse(req.url, true);
