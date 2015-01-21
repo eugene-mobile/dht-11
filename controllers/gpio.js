@@ -11,7 +11,7 @@ rpi.on('change', function(channel, value) {
     console.log(pinValues);
 });
 
-exports.init = function init(outputPins) {
+exports.useAsOutput = function(outputPins) {
     if (outputPins instanceof Array) {
         outputPins.forEach(function(pinNum) {
             rpi.setup(pinNum, rpi.DIR_OUT);

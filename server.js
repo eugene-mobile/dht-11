@@ -10,7 +10,7 @@ const sensorType = 11;  //DHT-11
 ambient.init(sensorType, sensorPin)
 
 const outputPins = [40, 38, 36, 32, 26, 24, 22, 18];
-gpio.init(outputPins)
+gpio.useAsOutput(outputPins)
 
 app.get('/ajax/ambient', function(req, res) {
     //console.log('HTTP GET request /ambient')

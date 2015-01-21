@@ -5,3 +5,8 @@ div.ambient-info {
     min-width: 250px;
     max-width: 500px;
 }
+
+div.output-pins-info {
+    min-width: 250px;
+    max-width: 500px;
+}
