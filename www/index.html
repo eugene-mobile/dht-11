@@ -7,7 +7,7 @@
     <link href="css/styles.css" rel="stylesheet">
     <script>
         function togglePin(pinNum) {
-            $.post( "ajax/pin/"+pinNum, function( data ) {
+            $.post( "ajax/pin/"+pinNum+"?value=true", function( data ) {
                 alert('success! '+data);
                 //$( ".result" ).html( data );
             });
@@ -24,7 +24,7 @@
 <body>
 <h1>Welcome to PI rpi-nginx!</h1>
 <p>
-    <button class="btn btn-material-deeppurple" onclick="togglePin(1)">Deep purple button</button>
+    <button class="btn btn-material-deeppurple" onclick="togglePin(40)">Deep purple button</button>
 </p>
 
 <div class="panel panel-info ambient-info">
